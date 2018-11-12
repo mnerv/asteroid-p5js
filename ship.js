@@ -82,6 +82,8 @@ function Ship(){
 
 	this.thrust = function(){
 		let force = p5.Vector.fromAngle(this.heading);
+		force.mult(0.5);
+		// console.log(Math.pow(force.x, 2) + Math.pow(force.y, 2));
 		this.velocity.add(force);
 	}
 }
