@@ -28,6 +28,20 @@ function Ship(){
         fill(0);
 		stroke(255);
 		triangle(-this.r, this.r, this.r, this.r, 0, -this.r);
+
+		stroke(0, 255, 255);
+		noFill();
+        beginShape();
+        for (let i = 0; i < 10; i++) {
+            let angle = map(i, 0, 10, 0, TWO_PI);
+            let r = this.r;
+            // Polar to Cartesian coordinate system
+            let x = r * cos(angle);
+            let y = r * sin(angle);
+            vertex(x, y);
+        }
+        endShape(CLOSE);
+
 		pop();
 	};
 
@@ -42,6 +56,15 @@ function Ship(){
 			this.pos.y = -this.r;
 		} else if(this.pos.y < -this.r){
 			this.pos.y = height + this.r;
+		}
+	}
+
+	this.hits = function(asteroid){
+		let d = dist(this.pos.x, this.pos.y, asteroid.pos.x, asteroid.pos.y);
+		if(d < this.r){
+			return true;
+		} else {
+			return false
 		}
 	}
 
