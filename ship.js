@@ -29,7 +29,7 @@ function Ship(){
 		stroke(255);
 		triangle(-this.r, this.r, this.r, this.r, 0, -this.r);
 
-		stroke(0, 255, 255);
+		stroke(0, 255*0.7, 255*0.7);
 		noFill();
         beginShape();
         for (let i = 0; i < 10; i++) {

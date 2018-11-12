@@ -1,9 +1,8 @@
 window.addEventListener("touchstart", touchStart, false);
 window.addEventListener("touchmove", touchMove, false);
-// window.addEventListener("touchend", touchEnd, false);
-// window.addEventListener("touchcancel", touchCancel, false);
+window.addEventListener("touchend", touchEnd, false);
+// window.addEventListener("touchcancel", touchcancel, false);
 // window.addEventListener("touchforcechange", touchForceChange, false);
-
 
 let ship;
 let rotationSpeed = 0.08;
@@ -62,26 +61,31 @@ function keyReleased() {
 
 }
 
-
-
 function touchMove(event){
 	let x = event.touches[0].pageX;
-	let y= event.touches[0].pageY;
-	console.log('x: ' + x, ", y: " + y);
-	// document.getElementById("demo").innerHTML = x + ", " + y;
+	let y = event.touches[0].pageY;
 }
 
 function touchStart(event){
 	// asteroids.push(new Asteroid());
 	let x = event.touches[0].pageX;
-	let y= event.touches[0].pageY;
+	let y = event.touches[0].pageY;
 }
 
+function touchEnd(event){
+	console.log("Hello World");
+}
+
+// function touchForceChange(event){
+// 	console.log(event.touches[0].force);
+// }
+
+
 window.addEventListener('devicemotion', function(event) {
-	console.log(event.acceleration.x + ' m/s2');
+	// console.log(event.acceleration.x + ' m/s2');
 	let x = event.acceleration.x;
 	let y = event.acceleration.y;
-	document.getElementById("demo").innerHTML = x + ", " + y;
+	// document.getElementById("demo").innerHTML = x + ", " + y;
   });
 
 function keyPressed() {
@@ -91,7 +95,6 @@ function keyPressed() {
 
 	if(key == 'Q'){
 		asteroids.push(new Asteroid());
-		// console.log(asteroids.length);
 	}
 
 	if (keyCode == RIGHT_ARROW) {
@@ -102,3 +105,26 @@ function keyPressed() {
 		ship.thrusting(true);
 	}
 }
+
+let timeout;
+let isHidden = false;
+
+document.addEventListener("mousemove", magicMouse);
+
+function magicMouse() {
+    if (timeout) {
+        clearTimeout(timeout);
+    }
+    timeout = setTimeout(function() {
+        if (!isHidden) {
+            document.querySelector("canvas").style.cursor = "none";
+            // document.querySelector("#editor").style.background = "#fff";
+            isHidden = true;
+        }
+    }, 500);
+    if (isHidden) {
+        document.querySelector("canvas").style.cursor = "auto";
+        // document.querySelector("#editor").style.background = "#000";
+        isHidden = false;
+    }
+};

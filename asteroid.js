@@ -38,7 +38,7 @@ function Asteroid(pos, r) {
         }
         endShape(CLOSE);
 
-        stroke(255*0.5);
+        stroke(194, 14, 213);
         beginShape();
         for (let i = 0; i < this.total*5; i++) {
             let angle = map(i, 0, this.total*5, 0, TWO_PI);
