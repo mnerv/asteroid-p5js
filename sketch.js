@@ -1,3 +1,10 @@
+window.addEventListener("touchstart", touchStart, false);
+window.addEventListener("touchmove", touchMove, false);
+// window.addEventListener("touchend", touchEnd, false);
+// window.addEventListener("touchcancel", touchCancel, false);
+// window.addEventListener("touchforcechange", touchForceChange, false);
+
+
 let ship;
 let rotationSpeed = 0.08;
 let asteroidCount = 5;
@@ -43,9 +50,7 @@ function draw() {
 		}
 
 	}
-
-	// console.log(lasers.length);
-
+	
 }
 
 function keyReleased() {
@@ -57,18 +62,37 @@ function keyReleased() {
 
 }
 
-function keyPressed() {
 
+
+function touchMove(event){
+	let x = event.touches[0].pageX;
+	let y= event.touches[0].pageY;
+	console.log('x: ' + x, ", y: " + y);
+	// document.getElementById("demo").innerHTML = x + ", " + y;
+}
+
+function touchStart(event){
+	// asteroids.push(new Asteroid());
+	let x = event.touches[0].pageX;
+	let y= event.touches[0].pageY;
+}
+
+window.addEventListener('devicemotion', function(event) {
+	console.log(event.acceleration.x + ' m/s2');
+	let x = event.acceleration.x;
+	let y = event.acceleration.y;
+	document.getElementById("demo").innerHTML = x + ", " + y;
+  });
+
+function keyPressed() {
 	if (keyCode == 88) {
 		lasers.push(new Laser(ship.pos, ship.heading));
 	}
 
 	if(key == 'Q'){
 		asteroids.push(new Asteroid());
-		console.log(asteroids.length);
+		// console.log(asteroids.length);
 	}
-
-	// console.log(event);
 
 	if (keyCode == RIGHT_ARROW) {
 		ship.setRotation(rotationSpeed);
