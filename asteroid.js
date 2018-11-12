@@ -44,6 +44,7 @@ function Asteroid(pos, r) {
             let angle = map(i, 0, this.total*5, 0, TWO_PI);
             let r = this.r;
             // Polar to Cartesian coordinate system
+            // https://en.wikipedia.org/wiki/Cartesian_coordinate_system
             let x = r * cos(angle);
             let y = r * sin(angle);
             vertex(x, y);
