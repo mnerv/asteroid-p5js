@@ -37,6 +37,19 @@ function Asteroid(pos, r) {
             vertex(x, y);
         }
         endShape(CLOSE);
+
+        stroke(255*0.5);
+        beginShape();
+        for (let i = 0; i < this.total*5; i++) {
+            let angle = map(i, 0, this.total*5, 0, TWO_PI);
+            let r = this.r;
+            // Polar to Cartesian coordinate system
+            let x = r * cos(angle);
+            let y = r * sin(angle);
+            vertex(x, y);
+        }
+        endShape(CLOSE);
+
         pop();
     }
 
