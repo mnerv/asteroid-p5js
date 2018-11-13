@@ -31,6 +31,7 @@ function draw() {
 	for (let i = 0; i < asteroids.length; i++) {
 		if(ship.hits(asteroids[i])){
 			console.log('oooops!');
+			scoreboard.resetScore();
 		}
 		asteroids[i].update();
 	}

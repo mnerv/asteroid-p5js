@@ -1,4 +1,4 @@
-function Scoreboard(offset){
+function Scoreboard(){
     this.score = 0;
     this.textHeight = 16;
     this.pos = createVector(5, this.textHeight);
@@ -17,17 +17,21 @@ function Scoreboard(offset){
     this.render = function(){
         push();
         let tempText = 'score: ' + this.score;
-        // translate(this.pos.x, this.pos.y);
+
         textSize(this.textHeight);
         fill(255);
         textFont('Roboto');
         text(tempText, this.pos.x, this.pos.y);
-        // console.log(this.pos.x + " " + this.pos.y);
         
         pop();
     }
 
     this.add = function(score){
         this.realScore += floor(score * 5);
+    }
+
+    this.resetScore = function(){
+        this.score = 0;
+        this.realScore = 0;
     }
 }
