@@ -9,3 +9,5 @@ Press [here](https://kthexiii.github.io/asteroid-p5js/) to try it
 `spacebar` is the same as `up arrow key`
 
 `q` to spawn new asteroid
+
+`m` or `escape key` will pause and resume the game
