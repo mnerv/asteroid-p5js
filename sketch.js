@@ -7,6 +7,7 @@ window.addEventListener("touchend", touchEnd, false);
 let timeout;
 let isMouseHidden = false;
 
+let gamePaused = false;
 let ship;
 let scoreboard;
 let rotationSpeed = 0.05;
@@ -61,6 +62,15 @@ function draw() {
 	scoreboard.update();
 }
 
+function playPause(){
+	if(!gamePaused){
+		noLoop();
+	} else {
+		loop();
+	}
+	gamePaused = !gamePaused;
+}
+
 function keyReleased() {
 	if (keyCode == RIGHT_ARROW || keyCode == LEFT_ARROW ) {
 		ship.setRotation(0);
@@ -85,11 +95,6 @@ function touchEnd(event){
 	console.log("Hello World");
 }
 
-// function touchForceChange(event){
-// 	console.log(event.touches[0].force);
-// }
-
-
 window.addEventListener('devicemotion', function(event) {
 	// console.log(event.acceleration.x + ' m/s2');
 	let x = event.acceleration.x;
@@ -106,8 +111,8 @@ function keyPressed() {
 		asteroids.push(new Asteroid());
 	}
 
-	if(key == 'G'){
-		scoreboard.add(50);
+	if(key == 'P' || keyCode == 27){
+		playPause();
 	}
 
 	if (keyCode == RIGHT_ARROW) {
@@ -119,9 +124,7 @@ function keyPressed() {
 	}
 }
 
-document.addEventListener("mousemove", magicMouse);
-
-function magicMouse() {
+document.addEventListener("mousemove", () => {
     if (timeout) {
         clearTimeout(timeout);
     }
@@ -135,4 +138,4 @@ function magicMouse() {
         document.querySelector("canvas").style.cursor = "auto";
         isMouseHidden = false;
     }
-};
+});

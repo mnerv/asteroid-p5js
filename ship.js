@@ -1,7 +1,7 @@
 function Ship() {
 	this.pos = createVector(width / 2, height / 2);
-	this.heading = 0
-	this.r = 10
+	this.heading = 0;
+	this.r = 10;
 	this.rotation = 0;
 	this.velocity = createVector(0, 0);
 	this.isThrust = false;
@@ -88,7 +88,7 @@ function Ship() {
 			force = p5.Vector.fromAngle(this.heading-this.rotation);
 		}
 		force.mult(0.5);
-		// console.log(Math.pow(force.x, 2) + Math.pow(force.y, 2));
 		this.velocity.add(force);
 	}
+	
 }
