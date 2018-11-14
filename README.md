@@ -10,4 +10,4 @@ Press [here](https://kthexiii.github.io/asteroid-p5js/) to try it
 
 `q` to spawn new asteroid
 
-`m` or `escape key` will pause and resume the game
+`p` or `escape key` will pause and resume the game
