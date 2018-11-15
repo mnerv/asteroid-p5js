@@ -7,6 +7,7 @@ window.addEventListener("touchend", touchEnd, false);
 let timeout;
 let isMouseHidden = false;
 
+let arrowKeyPressed = 0;
 let gamePaused = false;
 let ship;
 let scoreboard;
@@ -28,9 +29,9 @@ function setup() {
 function draw() {
 	background(0);
 	ship.update();
-	
+
 	for (let i = 0; i < asteroids.length; i++) {
-		if(ship.hits(asteroids[i])){
+		if (ship.hits(asteroids[i])) {
 			console.log('oooops!');
 			scoreboard.resetScore();
 		}
@@ -39,7 +40,7 @@ function draw() {
 
 	for (let i = lasers.length - 1; i >= 0; i--) {
 		lasers[i].update();
-		if(lasers[i].offscreen()){
+		if (lasers[i].offscreen()) {
 			lasers.splice(i, 1);
 			break;
 		}
@@ -62,8 +63,8 @@ function draw() {
 	scoreboard.update();
 }
 
-function playPause(){
-	if(!gamePaused){
+function playPause() {
+	if (!gamePaused) {
 		noLoop();
 	} else {
 		loop();
@@ -72,70 +73,84 @@ function playPause(){
 }
 
 function keyReleased() {
-	if (keyCode == RIGHT_ARROW || keyCode == LEFT_ARROW ) {
-		ship.setRotation(0);
-	} else if (keyCode == UP_ARROW || key == ' ') {
+	if (keyCode == RIGHT_ARROW || keyCode == LEFT_ARROW) {
+		arrowKeyPressed--;
+		if(arrowKeyPressed == 0){
+			ship.setRotation(0);
+		}
+	}
+	if (keyCode == UP_ARROW || key == ' ') {
 		ship.thrusting(false);
 	}
 
 }
 
-function touchMove(event){
+function touchMove(event) {
 	let x = event.touches[0].pageX;
 	let y = event.touches[0].pageY;
 }
 
-function touchStart(event){
-	// asteroids.push(new Asteroid());
+function touchStart(event) {
 	let x = event.touches[0].pageX;
 	let y = event.touches[0].pageY;
 }
 
-function touchEnd(event){
+function touchEnd(event) {
 	console.log("Hello World");
 }
 
-window.addEventListener('devicemotion', function(event) {
+window.addEventListener('devicemotion', function (event) {
 	// console.log(event.acceleration.x + ' m/s2');
-	let x = event.acceleration.x;
-	let y = event.acceleration.y;
+	// let x = event.acceleration.x;
+	// let y = event.acceleration.y;
 	// document.getElementById("demo").innerHTML = x + ", " + y;
-  });
+});
+
+document.addEventListener('keydown', (event) => {
+	console.log(event.key);
+	// console.log(LEFT_ARROW);
+
+});
 
 function keyPressed() {
 	if (keyCode == 88) {
 		lasers.push(new Laser(ship.pos, ship.heading));
 	}
 
-	if(key == 'Q'){
+	if (key == 'Q') {
 		asteroids.push(new Asteroid());
 	}
 
-	if(key == 'P' || keyCode == 27){
+	if (key == 'P' || keyCode == 27) {
 		playPause();
 	}
 
 	if (keyCode == RIGHT_ARROW) {
 		ship.setRotation(rotationSpeed);
+		arrowKeyPressed++;
 	} else if (keyCode == LEFT_ARROW) {
 		ship.setRotation(-rotationSpeed);
-	} else if (keyCode == UP_ARROW || key == ' ') {
+		arrowKeyPressed++;
+	} 
+	if (keyCode == UP_ARROW || key == ' ') {
 		ship.thrusting(true);
 	}
+
+
 }
 
 document.addEventListener("mousemove", () => {
-    if (timeout) {
-        clearTimeout(timeout);
-    }
-    timeout = setTimeout(function() {
-        if (!isMouseHidden) {
-            document.querySelector("canvas").style.cursor = "none";
-            isMouseHidden = true;
-        }
-    }, 500);
-    if (isMouseHidden) {
-        document.querySelector("canvas").style.cursor = "auto";
-        isMouseHidden = false;
-    }
+	if (timeout) {
+		clearTimeout(timeout);
+	}
+	timeout = setTimeout(function () {
+		if (!isMouseHidden) {
+			document.querySelector("canvas").style.cursor = "none";
+			isMouseHidden = true;
+		}
+	}, 500);
+	if (isMouseHidden) {
+		document.querySelector("canvas").style.cursor = "auto";
+		isMouseHidden = false;
+	}
 });
