@@ -1,12 +1,12 @@
 function Scoreboard(){
     this.score = 0;
     this.textHeight = 16;
-    this.pos = createVector(5, this.textHeight);
+    this.pos = createVector(5, this.textHeight+2);
     this.realScore = 0;
 
     this.update = function(){
         if(this.realScore - this.score > 200){
-            this.score = this.realScore - 100; 
+            this.score = this.realScore - 100;
         } else if(this.realScore > this.score){
             this.score++;
         }
@@ -16,7 +16,7 @@ function Scoreboard(){
 
     this.render = function(){
         push();
-        let tempText = 'score: ' + this.score;
+        let tempText = 'SCORE:  ' + this.score;
 
         textSize(this.textHeight);
         fill(255);
