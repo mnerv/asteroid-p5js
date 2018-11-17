@@ -7,7 +7,8 @@ window.addEventListener("touchend", touchEnd, false);
 let timeout;
 let isMouseHidden = false;
 
-let arrowKeyPressed = 0;
+let moveKeyPressCount = 0;
+let gameOver = false;
 let gamePaused = false;
 let ship;
 let scoreboard;
@@ -32,7 +33,6 @@ function draw() {
 
 	for (let i = 0; i < asteroids.length; i++) {
 		if (ship.hits(asteroids[i])) {
-			console.log('oooops!');
 			scoreboard.resetScore();
 		}
 		asteroids[i].update();
@@ -74,8 +74,8 @@ function playPause() {
 
 function keyReleased() {
 	if (keyCode == RIGHT_ARROW || keyCode == LEFT_ARROW) {
-		arrowKeyPressed--;
-		if(arrowKeyPressed == 0){
+		moveKeyPressCount--;
+		if(moveKeyPressCount == 0){
 			ship.setRotation(0);
 		}
 	}
@@ -106,10 +106,21 @@ window.addEventListener('devicemotion', function (event) {
 	// document.getElementById("demo").innerHTML = x + ", " + y;
 });
 
-document.addEventListener('keydown', (event) => {
-	console.log(event.key);
-	// console.log(LEFT_ARROW);
+// document.addEventListener('keydown', (event) => {
+// 	console.log(event.key);
+// 	// console.log(LEFT_ARROW);
 
+// });
+
+window.addEventListener('blur', () => {
+	// playPause();
+	ship.setRotation(0);
+	moveKeyPressCount = 0;
+});
+
+window.addEventListener('focus', () => {
+	// gamePaused = true;
+	// playPause();
 });
 
 function keyPressed() {
@@ -127,15 +138,14 @@ function keyPressed() {
 
 	if (keyCode == RIGHT_ARROW) {
 		ship.setRotation(rotationSpeed);
-		arrowKeyPressed++;
+		moveKeyPressCount++;
 	} else if (keyCode == LEFT_ARROW) {
 		ship.setRotation(-rotationSpeed);
-		arrowKeyPressed++;
+		moveKeyPressCount++;
 	} 
 	if (keyCode == UP_ARROW || key == ' ') {
 		ship.thrusting(true);
 	}
-
 
 }
 
