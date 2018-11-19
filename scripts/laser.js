@@ -3,7 +3,6 @@ function Laser(sPos, angle){
     this.velocity = p5.Vector.fromAngle(angle);
     this.velocity.mult(10);
 
-
     this.update = function(){
         this.pos.add(this.velocity);
 

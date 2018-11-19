@@ -16,11 +16,11 @@ function Scoreboard(){
 
     this.render = function(){
         push();
-        let tempText = 'SCORE:  ' + this.score;
+        let tempText = 'SCORE: ' + this.score;
 
+        textFont('Roboto');
         textSize(this.textHeight);
         fill(255);
-        textFont('Roboto');
         text(tempText, this.pos.x, this.pos.y);
         
         pop();
@@ -34,4 +34,5 @@ function Scoreboard(){
         this.score = 0;
         this.realScore = 0;
     }
+    
 }

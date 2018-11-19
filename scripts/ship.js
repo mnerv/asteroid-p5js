@@ -8,6 +8,8 @@ function Ship() {
 
 	this.friction = 0.97;
 
+	this.arrowKeyPressed = 0;
+
 	this.update = function () {
 		this.pos.add(this.velocity);
 		this.velocity.mult(this.friction);
@@ -16,7 +18,7 @@ function Ship() {
 			this.thrust();
 
 		this.edges();
-		this.turn();
+		this.rotating();
 		this.render();
 	}
 
@@ -29,6 +31,7 @@ function Ship() {
 		stroke(255);
 		triangle(-this.r, this.r, this.r, this.r, 0, -this.r);
 
+		// Draw hitbox
 		stroke(0, 255 * 0.7, 255 * 0.7);
 		noFill();
 		beginShape();
@@ -76,7 +79,7 @@ function Ship() {
 		this.isThrust = tof;
 	}
 
-	this.turn = function () {
+	this.rotating = function () {
 		this.heading += this.rotation;
 	}
 

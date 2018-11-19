@@ -38,6 +38,7 @@ function Asteroid(pos, r) {
         }
         endShape(CLOSE);
 
+        // Draw hitbox
         stroke(194, 14, 213);
         beginShape();
         for (let i = 0; i < this.total*5; i++) {

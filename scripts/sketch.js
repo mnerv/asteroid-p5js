@@ -17,11 +17,15 @@ let asteroidCount = 5;
 let asteroids = [];
 let lasers = [];
 
+function preload(){
+	scoreboard = new Scoreboard();
+	
+}
+
 function setup() {
 	createCanvas(windowWidth, windowHeight);
-	ship = new Ship();
-	scoreboard = new Scoreboard();
 	scoreboard.render();
+	ship = new Ship();	
 	for (let i = 0; i < asteroidCount; i++) {
 		asteroids.push(new Asteroid());
 	}
