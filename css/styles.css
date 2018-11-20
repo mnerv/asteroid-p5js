@@ -1,0 +1,34 @@
+body {
+    margin:0;
+    padding:0;
+    overflow: hidden;
+    background-color: black;
+}
+canvas {
+    margin:auto;
+}
+
+button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+
+    background-color: #ffffff;
+    border: none;
+    color: rgb(14, 14, 14);
+    padding: 10px 24px;
+    font-family: 'Roboto';
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 24px;
+    margin: 2px 1px;
+    cursor: pointer;
+    
+}
+
+button:hover {
+    background-color: rgb(228, 252, 255);
+}

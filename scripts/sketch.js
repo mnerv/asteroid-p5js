@@ -67,6 +67,10 @@ function draw() {
 	scoreboard.update();
 }
 
+function windowResized() {
+	resizeCanvas(windowWidth, windowHeight);
+}
+
 function playPause() {
 	if (!gamePaused) {
 		noLoop();
