@@ -1,38 +1,37 @@
-function Scoreboard(){
-    this.score = 0;
-    this.textHeight = 16;
-    this.pos = createVector(5, this.textHeight+2);
-    this.realScore = 0;
+class Scoreboard {
+    constructor() {
+        this.displayScore = 0
+        this.textHeight = 16
+        this.pos = createVector(5, this.textHeight + 2)
+        this.realScore = 0
+    }
 
-    this.update = function(){
-        if(this.realScore - this.score > 200){
-            this.score = this.realScore - 100;
-        } else if(this.realScore > this.score){
-            this.score++;
+    update() {
+        if (this.realScore - this.displayScore > 200) {
+            this.displayScore = this.realScore - 100
+        } else if (this.realScore > this.displayScore) {
+            this.displayScore++
         }
-
-        this.render();
     }
 
-    this.render = function(){
-        push();
-        let tempText = 'SCORE: ' + this.score;
+    render() {
+        push()
+        let tempText = 'SCORE: ' + this.displayScore
 
-        textFont('Roboto');
-        textSize(this.textHeight);
-        fill(255);
-        text(tempText, this.pos.x, this.pos.y);
-        
-        pop();
+        textFont('Roboto')
+        textSize(this.textHeight)
+        fill(255)
+        text(tempText, this.pos.x, this.pos.y)
+
+        pop()
     }
 
-    this.add = function(score){
-        this.realScore += floor(score * 5);
+    add(score) {
+        this.realScore += floor(score * 5)
     }
 
-    this.resetScore = function(){
-        this.score = 0;
-        this.realScore = 0;
+    resetScore() {
+        this.displayScore = 0
+        this.realScore = 0
     }
-    
 }

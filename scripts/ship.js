@@ -1,6 +1,9 @@
 class Ship {
     constructor() {
         this.pos = createVector(width / 2, height / 2)
+        this.rotationSpeed = 0.05
+        this.thrustMultiplier = 0.5
+
         this.heading = 0
         this.r = 10
         this.rotation = 0
@@ -18,7 +21,6 @@ class Ship {
 
         this.edges()
         this.rotating()
-        this.render()
     }
 
     render() {
@@ -89,7 +91,8 @@ class Ship {
         } else {
             force = p5.Vector.fromAngle(this.heading - this.rotation)
         }
-        force.mult(0.5)
+
+        force.mult(this.thrustMultiplier)
         this.velocity.add(force)
     }
 }
