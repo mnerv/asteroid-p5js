@@ -22,7 +22,7 @@ function setup() {
 
 function draw() {
     background(0)
-    // gm.update()
+    gm.update()
     gm.show()
     if (gm.isPlayerAlive() && gameStarted) {
         gameStarted = false
@@ -31,7 +31,7 @@ function draw() {
 }
 
 function gameOver() {
-    startStopInterval(false)
+    // startStopInterval(false)
     noLoop()
 
     gm.resetGame()
@@ -43,7 +43,7 @@ function gameOver() {
 
 function startGame() {
     gm.startGame()
-    startStopInterval(true)
+    // startStopInterval(true)
     showHideMenu(false)
     gameStarted = true
     loop()
@@ -71,16 +71,20 @@ function changeMainLabel(value) {
 function playPause() {
     if (!gamePaused) {
         noLoop()
-        startStopInterval(false)
-        changeMainLabel('PAUSED')
-        assignFunction('RESUME', playPause)
+        // startStopInterval(false)
+        if (gameStarted) {
+            changeMainLabel('PAUSED')
+            assignFunction('RESUME', playPause)
+        }
         showHideMenu(true)
     } else {
         loop()
-        startStopInterval(true)
+        // startStopInterval(true)
         assignFunction('PLAYING', playPause)
         showHideMenu(false)
     }
+    gm.stop_rotate()
+    moveKeyPressCount = 0
     gamePaused = !gamePaused
 }
 
@@ -99,7 +103,7 @@ function startStopInterval(tof) {
 function keyReleased() {
     if (keyCode == RIGHT_ARROW || keyCode == LEFT_ARROW) {
         moveKeyPressCount--
-        if (moveKeyPressCount == 0) {
+        if (moveKeyPressCount <= 0) {
             gm.stop_rotate()
         }
     }
@@ -122,7 +126,7 @@ function keyPressed() {
     if (key == 'R') gm.spawn_player()
 
     if (key == 'P' || keyCode == 27) {
-        playPause()
+        if (gameStarted) playPause()
     }
 
     if (keyCode == RIGHT_ARROW) {
@@ -142,7 +146,7 @@ function windowResized() {
 }
 
 window.addEventListener('blur', () => {
-    if (!gamePaused && gameStarted) playPause()
+    if (!gamePaused) playPause()
     gm.stop_rotate()
     moveKeyPressCount = 0
 })
