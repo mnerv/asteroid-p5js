@@ -114,6 +114,20 @@ function keyReleased() {
     }
 }
 
+function touchStarted() {
+    gm.touchControl(mouseX, mouseY)
+    gm.shootLaser()
+}
+
+function touchMoved() {
+    gm.touchControl(mouseX, mouseY)
+    return false
+}
+
+function touchEnded() {
+    gm.thrust(false)
+}
+
 function keyPressed() {
     if (keyCode == 88) {
         gm.shootLaser()

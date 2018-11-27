@@ -4,7 +4,7 @@ class Ship {
         this.rotationSpeed = 0.05
         this.thrustMultiplier = 0.5
 
-        this.heading = 0
+        this.heading = -PI / 2
         this.r = 10
         this.rotation = 0
         this.velocity = createVector(0, 0)
@@ -82,6 +82,14 @@ class Ship {
 
     rotating() {
         this.heading += this.rotation
+    }
+
+    setHeading(angle) {
+        this.heading = angle
+    }
+
+    startHeading() {
+        this.heading = -PI / 2
     }
 
     thrust() {

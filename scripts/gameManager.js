@@ -127,3 +127,16 @@ GameManager.prototype.shootLaser = function() {
 GameManager.prototype.thrust = function(tof) {
     if (this.player) this.player.thrusting(tof)
 }
+
+GameManager.prototype.touchControl = function(x, y) {
+    if (this.player) {
+        let vec = createVector(x - this.player.pos.x, y - this.player.pos.y)
+        let shipHeading = vec.heading()
+        this.player.setHeading(shipHeading)
+        this.thrust(true)
+    }
+}
+
+GameManager.prototype.touchConStopped = function(x, y) {
+    this.thrust(false)
+}
