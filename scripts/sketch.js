@@ -137,6 +137,10 @@ function keyPressed() {
     }
 }
 
+function windowResized() {
+    resizeCanvas(windowWidth, windowHeight)
+}
+
 window.addEventListener('blur', () => {
     if (!gamePaused && gameStarted) playPause()
     gm.stop_rotate()
