@@ -102,7 +102,7 @@ class GameManager {
 
     addAsteroid(quantity) {
         for (let i = 0; i < quantity; i++) {
-            this.asteroids.push(new Asteroid(this.player.pos, null, true))
+            this.asteroids.push(new Asteroid())
         }
     }
 }

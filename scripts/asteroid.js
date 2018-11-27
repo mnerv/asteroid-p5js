@@ -1,14 +1,13 @@
 class Asteroid {
-    constructor(pos, r, newAs) {
-        if (pos && !newAs) {
+    constructor(pos, r) {
+        if (pos) {
             this.pos = pos.copy()
             this.r = r * 0.5
         } else {
-            this.pos = createVector(random(width), random(height))
+            let rand1 = random() > 0.5 ? 0 : height
+            let rand2 = rand1 == 0 ? 10 : height - 10
+            this.pos = createVector(random(width), random(rand1, rand2))
             this.r = random(25, 50)
-        }
-        if (newAs) {
-            if (abs(this.pos.x - pos.x) < 10) this.pos.x += 20
         }
         this.velocity = p5.Vector.random2D()
 
