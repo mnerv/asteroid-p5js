@@ -34,8 +34,8 @@ class GameManager {
     }
 
     startGame() {
-        this.addAsteroid(10)
         this.spawn_player()
+        this.addAsteroid(10)
     }
 
     resetGame() {
@@ -96,7 +96,7 @@ class GameManager {
 
     addAsteroid(quantity) {
         for (let i = 0; i < quantity; i++) {
-            this.asteroids.push(new Asteroid())
+            this.asteroids.push(new Asteroid(this.player.pos, null, true))
         }
     }
 }
