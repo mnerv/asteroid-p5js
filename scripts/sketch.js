@@ -4,6 +4,7 @@ let isMouseHidden = false
 let moveKeyPressCount = 0
 let gamePaused = false
 let gameStarted = false
+let showTouchControl = false
 let gameTime
 let gm
 
@@ -115,12 +116,14 @@ function keyReleased() {
 }
 
 function touchStarted() {
+    showTouchControl = true
     gm.touchControl(mouseX, mouseY)
     gm.shootLaser()
 }
 
-function touchMoved() {
-    gm.touchControl(mouseX, mouseY)
+function touchMoved(event) {
+    console.log(event)
+    gm.touchControl(event.touches[0].pageX, event.touches[0].pageY)
     return false
 }
 
