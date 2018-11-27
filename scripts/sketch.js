@@ -9,11 +9,14 @@ let gm
 
 let mainLabel
 let playbtn
+let scoreLabel
 
 function setup() {
     createCanvas(windowWidth, windowHeight)
     gm = new GameManager()
 
+    scoreLabel = createP('SCORE: ').id('scorelbl')
+    scoreLabel.hide()
     mainLabel = createP('asteroid p5.js').id('namelbl')
     playbtn = createButton('PLAY').id('playpausebtn')
 
@@ -34,16 +37,17 @@ function gameOver() {
     // startStopInterval(false)
     noLoop()
 
-    gm.resetGame()
-
     assignFunction('PLAY AGAIN', startGame)
     changeMainLabel('GAME OVER')
     showHideMenu(true)
+    scoreLabel.show()
+    scoreLabel.html('HIGH SCORE: ' + gm.getHighScore())
+    gm.resetGame()
 }
 
 function startGame() {
     gm.startGame()
-    // startStopInterval(true)
+    scoreLabel.hide()
     showHideMenu(false)
     gameStarted = true
     loop()
@@ -71,7 +75,6 @@ function changeMainLabel(value) {
 function playPause() {
     if (!gamePaused) {
         noLoop()
-        // startStopInterval(false)
         if (gameStarted) {
             changeMainLabel('PAUSED')
             assignFunction('RESUME', playPause)
@@ -79,7 +82,6 @@ function playPause() {
         showHideMenu(true)
     } else {
         loop()
-        // startStopInterval(true)
         assignFunction('PLAYING', playPause)
         showHideMenu(false)
     }

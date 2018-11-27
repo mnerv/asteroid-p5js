@@ -9,6 +9,7 @@ class GameManager {
         this.lasers = []
 
         this.levelCounter = 0
+        this.score = 0
     }
 
     update() {
@@ -48,6 +49,7 @@ class GameManager {
             if (this.player)
                 if (this.player.hits(this.asteroids[i])) {
                     this.kill_player()
+                    this.score = this.scoreboard.realScore
                     this.scoreboard.resetScore()
                     this.asteroids = this.asteroids.concat(
                         this.asteroids[i].breakup()
@@ -76,6 +78,10 @@ class GameManager {
                 }
             }
         }
+    }
+
+    getHighScore() {
+        return this.score
     }
 
     nextLevel() {

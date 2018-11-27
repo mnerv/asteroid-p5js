@@ -60,3 +60,18 @@ textarea,
     text-align: center;
     font-size: 64px;
 }
+
+#scorelbl {
+    position: absolute;
+    font-family: 'Roboto';
+    text-align: center;
+    text-decoration: none;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+
+    color: #ffffff;
+    text-align: center;
+    font-size: 16px;
+}
