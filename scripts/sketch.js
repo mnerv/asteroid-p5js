@@ -146,7 +146,7 @@ function windowResized() {
 }
 
 window.addEventListener('blur', () => {
-    if (!gamePaused) playPause()
+    if (gameStarted) playPause()
     gm.stop_rotate()
     moveKeyPressCount = 0
 })
