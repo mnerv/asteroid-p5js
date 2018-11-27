@@ -1,97 +1,95 @@
-function Ship() {
-	this.pos = createVector(width / 2, height / 2);
-	this.heading = 0;
-	this.r = 10;
-	this.rotation = 0;
-	this.velocity = createVector(0, 0);
-	this.isThrust = false;
+class Ship {
+    constructor() {
+        this.pos = createVector(width / 2, height / 2)
+        this.heading = 0
+        this.r = 10
+        this.rotation = 0
+        this.velocity = createVector(0, 0)
+        this.isThrust = false
 
-	this.friction = 0.97;
+        this.friction = 0.97
+    }
 
-	this.arrowKeyPressed = 0;
+    update() {
+        this.pos.add(this.velocity)
+        this.velocity.mult(this.friction)
 
-	this.update = function () {
-		this.pos.add(this.velocity);
-		this.velocity.mult(this.friction);
+        if (this.isThrust) this.thrust()
 
-		if (this.isThrust)
-			this.thrust();
+        this.edges()
+        this.rotating()
+        this.render()
+    }
 
-		this.edges();
-		this.rotating();
-		this.render();
-	}
+    render() {
+        push()
+        translate(this.pos.x, this.pos.y)
+        rotate(this.heading + PI / 2)
+        // noFill();
+        fill(0)
+        stroke(255)
+        triangle(-this.r, this.r, this.r, this.r, 0, -this.r)
 
-	this.render = function () {
-		push();
-		translate(this.pos.x, this.pos.y);
-		rotate(this.heading + PI / 2);
-		// noFill();
-		fill(0);
-		stroke(255);
-		triangle(-this.r, this.r, this.r, this.r, 0, -this.r);
+        // Draw hitbox
+        stroke(0, 255 * 0.7, 255 * 0.7)
+        noFill()
+        beginShape()
+        for (let i = 0; i < 10; i++) {
+            let angle = map(i, 0, 10, 0, TWO_PI)
+            let r = this.r
+            // Polar to Cartesian coordinate system
+            let x = r * cos(angle)
+            let y = r * sin(angle)
+            vertex(x, y)
+        }
+        endShape(CLOSE)
 
-		// Draw hitbox
-		stroke(0, 255 * 0.7, 255 * 0.7);
-		noFill();
-		beginShape();
-		for (let i = 0; i < 10; i++) {
-			let angle = map(i, 0, 10, 0, TWO_PI);
-			let r = this.r;
-			// Polar to Cartesian coordinate system
-			let x = r * cos(angle);
-			let y = r * sin(angle);
-			vertex(x, y);
-		}
-		endShape(CLOSE);
+        pop()
+    }
 
-		pop();
-	};
+    edges() {
+        if (this.pos.x > width + this.r) {
+            this.pos.x = -this.r
+        } else if (this.pos.x < -this.r) {
+            this.pos.x = width + this.r
+        }
 
-	this.edges = function () {
-		if (this.pos.x > width + this.r) {
-			this.pos.x = -this.r;
-		} else if (this.pos.x < -this.r) {
-			this.pos.x = width + this.r;
-		}
+        if (this.pos.y > height + this.r) {
+            this.pos.y = -this.r
+        } else if (this.pos.y < -this.r) {
+            this.pos.y = height + this.r
+        }
+    }
 
-		if (this.pos.y > height + this.r) {
-			this.pos.y = -this.r;
-		} else if (this.pos.y < -this.r) {
-			this.pos.y = height + this.r;
-		}
-	}
+    hits(asteroid) {
+        let d = dist(this.pos.x, this.pos.y, asteroid.pos.x, asteroid.pos.y)
+        if (d < this.r + asteroid.r) {
+            return true
+        } else {
+            return false
+        }
+    }
 
-	this.hits = function (asteroid) {
-		let d = dist(this.pos.x, this.pos.y, asteroid.pos.x, asteroid.pos.y);
-		if (d < this.r + asteroid.r) {
-			return true;
-		} else {
-			return false
-		}
-	}
+    setRotation(angle) {
+        this.rotation = angle
+    }
 
-	this.setRotation = function (angle) {
-		this.rotation = angle;
-	}
+    thrusting(tof) {
+        this.isThrust = tof
+    }
 
-	this.thrusting = function (tof) {
-		this.isThrust = tof;
-	}
+    rotating() {
+        this.heading += this.rotation
+    }
 
-	this.rotating = function () {
-		this.heading += this.rotation;
-	}
-
-	this.thrust = function () {
-		let force;
-		if (this.rotation == 0) {
-			force = p5.Vector.fromAngle(this.heading);
-		} else {
-			force = p5.Vector.fromAngle(this.heading-this.rotation);
-		}
-		force.mult(0.5);
-		this.velocity.add(force);
-	}
-	
+    thrust() {
+        let force
+        if (this.rotation == 0) {
+            force = p5.Vector.fromAngle(this.heading)
+        } else {
+            force = p5.Vector.fromAngle(this.heading - this.rotation)
+        }
+        force.mult(0.5)
+        this.velocity.add(force)
+    }
 }
