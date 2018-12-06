@@ -35,18 +35,17 @@ function draw() {
 }
 
 function gameOver() {
-    // startStopInterval(false)
-    noLoop()
-
     assignFunction('PLAY AGAIN', startGame)
     changeMainLabel('GAME OVER')
     showHideMenu(true)
     scoreLabel.show()
     scoreLabel.html('HIGH SCORE: ' + gm.getHighScore())
-    gm.resetGame()
 }
 
 function startGame() {
+    if (!gm.isNoAsteroid()) {
+        gm.resetGame()
+    }
     gm.startGame()
     scoreLabel.hide()
     showHideMenu(false)
@@ -94,9 +93,7 @@ function playPause() {
 function startStopInterval(tof) {
     if (tof)
         gameTime = setInterval(() => {
-            // console.time('someFunction')
             gm.update()
-            // console.timeEnd('someFunction')
         }, 1000 / 60)
     else {
         clearInterval(gameTime)
@@ -115,19 +112,28 @@ function keyReleased() {
     }
 }
 
-function touchStarted() {
-    showTouchControl = true
-    gm.touchControl(mouseX, mouseY)
-    gm.shootLaser()
-}
-
-function touchMoved(event) {
-    console.log(event)
-    gm.touchControl(event.touches[0].pageX, event.touches[0].pageY)
+function touchStarted(event) {
+    if (event.type == 'touchstart') {
+        gm.touchControl(event.touches[0].pageX, event.touches[0].pageY)
+        showTouchCon = true
+        gm.shootLaser()
+    }
     return false
 }
 
-function touchEnded() {
+function touchMoved(event) {
+    if (event.type == 'touchmove') {
+        gm.touchControl(event.touches[0].pageX, event.touches[0].pageY)
+    }
+    return false
+}
+
+function touchEnded(event) {
+    if (event.type == 'touchend') {
+        gm.touchControl(event.pageX, event.pageY)
+    }
+    showTouchCon = false
+    touchStartPos = []
     gm.thrust(false)
 }
 
@@ -148,7 +154,9 @@ function keyPressed() {
         if (gameStarted) playPause()
     }
 
-    if (keyCode == RIGHT_ARROW) {
+    if (key == ' ' && !gameStarted) {
+        startGame()
+    } else if (keyCode == RIGHT_ARROW) {
         gm.rotate(false)
         moveKeyPressCount++
     } else if (keyCode == LEFT_ARROW) {

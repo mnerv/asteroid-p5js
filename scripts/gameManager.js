@@ -140,3 +140,12 @@ GameManager.prototype.touchControl = function(x, y) {
 GameManager.prototype.touchConStopped = function(x, y) {
     this.thrust(false)
 }
+
+// Asteroid
+GameManager.prototype.getAsteroidCount = function() {
+    return this.asteroids.length
+}
+
+GameManager.prototype.isNoAsteroid = function() {
+    return this.asteroids.length == 0
+}
