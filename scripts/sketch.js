@@ -1,4 +1,3 @@
-// let d = new Date()
 let timeout
 let isMouseHidden = false
 let moveKeyPressCount = 0
@@ -155,11 +154,12 @@ function keyPressed() {
     if (key == 'R') gm.spawn_player()
 
     if (key == 'P' || keyCode == 27) {
-        if (gameStarted) playPause()
+        playPause()
     }
 
-    if (key == ' ' && !gameStarted) {
-        startGame()
+    if (key == ' ') {
+        if (!gm.gameStarted) startGame()
+        else if (gm.gameIsPaused) playPause()
     } else if (keyCode == RIGHT_ARROW) {
         gm.rotate(false)
         moveKeyPressCount++

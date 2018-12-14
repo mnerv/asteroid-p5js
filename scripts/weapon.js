@@ -1,4 +1,4 @@
-function Laser(sPos, angle) {
+function DotBullet(sPos, angle) {
     this.pos = createVector(sPos.x, sPos.y)
     this.velocity = p5.Vector.fromAngle(angle)
     this.velocity.mult(10)

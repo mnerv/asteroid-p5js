@@ -75,6 +75,8 @@ class GameManager {
         }
     }
 
+    checkHitCollision() {}
+
     checkLaserCollision() {
         for (let i = this.lasers.length - 1; i >= 0; i--) {
             if (this.lasers[i].offscreen()) {
@@ -136,9 +138,9 @@ GameManager.prototype.stop_rotate = function() {
     if (this.player) this.player.setRotation(0)
 }
 
-GameManager.prototype.shootLaser = function() {
+GameManager.prototype.shootLaser = function(type) {
     if (this.player)
-        this.lasers.push(new Laser(this.player.pos, this.player.heading))
+        this.lasers.push(new DotBullet(this.player.pos, this.player.heading))
 }
 
 GameManager.prototype.thrust = function(tof) {
