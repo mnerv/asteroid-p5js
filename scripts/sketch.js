@@ -1,9 +1,8 @@
-let d = new Date()
+// let d = new Date()
 let timeout
 let isMouseHidden = false
 let moveKeyPressCount = 0
-let gamePaused = false
-let gameStarted = false
+
 let showTouchControl = false
 let gameTime
 let gm
@@ -28,14 +27,13 @@ function draw() {
     background(0)
     gm.update()
     gm.show()
-    if (gm.isPlayerAlive() && gameStarted) {
-        gameStarted = false
+    if (gm.isPlayerAlive() && gm.gameIsOver) {
         gameOver()
     }
 }
 
 function gameOver() {
-    assignFunction('PLAY AGAIN', startGame)
+    assignFunction('PLAY AGAIN', resetGame)
     changeMainLabel('GAME OVER')
     showHideMenu(true)
     scoreLabel.show()
@@ -43,13 +41,18 @@ function gameOver() {
 }
 
 function startGame() {
-    if (!gm.isNoAsteroid()) {
-        gm.resetGame()
-    }
+    gm.startGame()
+
+    scoreLabel.hide()
+    showHideMenu(false)
+    loop()
+}
+
+function resetGame() {
+    gm.resetGame()
     gm.startGame()
     scoreLabel.hide()
     showHideMenu(false)
-    gameStarted = true
     loop()
 }
 
@@ -73,21 +76,22 @@ function changeMainLabel(value) {
 }
 
 function playPause() {
-    if (!gamePaused) {
+    if (gm.gameStarted && !gm.gameIsPaused) {
         noLoop()
-        if (gameStarted) {
+        if (!gm.gameIsOver) {
             changeMainLabel('PAUSED')
             assignFunction('RESUME', playPause)
         }
         showHideMenu(true)
-    } else {
+        gm.gameIsPaused = true
+    } else if (gm.gameStarted && !gm.gameIsOver) {
         loop()
         assignFunction('PLAYING', playPause)
         showHideMenu(false)
+        gm.gameIsPaused = false
     }
     gm.stop_rotate()
     moveKeyPressCount = 0
-    gamePaused = !gamePaused
 }
 
 function startStopInterval(tof) {
@@ -173,7 +177,7 @@ function windowResized() {
 }
 
 window.addEventListener('blur', () => {
-    if (gameStarted) playPause()
+    playPause()
     gm.stop_rotate()
     moveKeyPressCount = 0
 })

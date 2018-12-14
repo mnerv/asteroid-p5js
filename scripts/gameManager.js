@@ -1,6 +1,12 @@
 class GameManager {
     constructor() {
+        this.gameIsPaused = false
+        this.gameStarted = false
+        this.gameIsOver = false
+
         this.scoreboard = new Scoreboard()
+        this.levelBoard = new LevelBoard(this.scoreboard.textHeight)
+
         this.player
 
         this.rotationSpeed = 0.05
@@ -8,12 +14,15 @@ class GameManager {
         this.asteroids = []
         this.lasers = []
 
-        this.levelCounter = 0
         this.score = 0
+        this.levelCounter = this.levelBoard.level
     }
 
     update() {
-        if (this.player) this.player.update()
+        if (this.player) {
+            this.player.update()
+            this.checkRemainingAsteroid()
+        }
 
         this.checkPlayerCollision()
         this.checkLaserCollision()
@@ -25,6 +34,7 @@ class GameManager {
         if (this.player) {
             this.player.render()
             this.scoreboard.render()
+            this.levelBoard.render()
         }
         this.lasers.forEach(element => {
             element.update()
@@ -36,21 +46,27 @@ class GameManager {
 
     startGame() {
         this.spawn_player()
-        this.addAsteroid(10)
+        this.addAsteroid(5)
+        this.gameStarted = true
     }
 
     resetGame() {
         this.asteroids = []
         this.lasers = []
+        this.gameIsOver = false
+    }
+
+    checkRemainingAsteroid() {
+        if (this.asteroids.length == 0) {
+            this.nextLevel()
+        }
     }
 
     checkPlayerCollision() {
         for (let i = 0; i < this.asteroids.length; i++) {
             if (this.player)
                 if (this.player.hits(this.asteroids[i])) {
-                    this.kill_player()
-                    this.score = this.scoreboard.realScore
-                    this.scoreboard.resetScore()
+                    this.gameOver()
                     this.asteroids = this.asteroids.concat(
                         this.asteroids[i].breakup()
                     )
@@ -85,7 +101,8 @@ class GameManager {
     }
 
     nextLevel() {
-        this.levelCounter++
+        this.levelCounter = ++this.levelBoard.level
+        this.addAsteroid(5 + this.levelCounter)
     }
 
     spawn_player() {
@@ -148,4 +165,21 @@ GameManager.prototype.getAsteroidCount = function() {
 
 GameManager.prototype.isNoAsteroid = function() {
     return this.asteroids.length == 0
+}
+
+// Game play/pause
+GameManager.prototype.pauseGame = function() {
+    this.gameIsPaused = true
+}
+
+GameManager.prototype.resumeGame = function() {
+    this.gameIsPaused = false
+}
+
+GameManager.prototype.gameOver = function() {
+    this.kill_player()
+    this.score = this.scoreboard.realScore
+    this.scoreboard.resetScore()
+    this.gameIsOver = true
+    this.gameIsPaused = false
 }
