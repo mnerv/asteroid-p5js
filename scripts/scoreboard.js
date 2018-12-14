@@ -54,4 +54,8 @@ class LevelBoard {
 
         pop()
     }
+
+    resetLevel() {
+        this.level = 0
+    }
 }

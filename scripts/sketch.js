@@ -1,4 +1,5 @@
 let timeout
+let weaponTimeout
 let isMouseHidden = false
 let moveKeyPressCount = 0
 
@@ -113,13 +114,17 @@ function keyReleased() {
     if (keyCode == UP_ARROW || key == ' ') {
         gm.thrust(false)
     }
+
+    if (keyCode == 88) {
+        gm.stopShooting()
+    }
 }
 
 function touchStarted(event) {
     if (event.type == 'touchstart') {
         gm.touchControl(event.touches[0].pageX, event.touches[0].pageY)
         showTouchCon = true
-        gm.shootLaser()
+        gm.startShooting()
     }
     return false
 }
@@ -134,6 +139,7 @@ function touchMoved(event) {
 function touchEnded(event) {
     if (event.type == 'touchend') {
         gm.touchControl(event.pageX, event.pageY)
+        gm.stopShooting()
     }
     showTouchCon = false
     touchStartPos = []
@@ -142,7 +148,7 @@ function touchEnded(event) {
 
 function keyPressed() {
     if (keyCode == 88) {
-        gm.shootLaser()
+        gm.startShooting()
     }
 
     if (key == 'Q') {
@@ -177,7 +183,7 @@ function windowResized() {
 }
 
 window.addEventListener('blur', () => {
-    playPause()
+    if (!gm.gameIsPaused) playPause()
     gm.stop_rotate()
     moveKeyPressCount = 0
 })

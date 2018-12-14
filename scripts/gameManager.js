@@ -3,6 +3,8 @@ class GameManager {
         this.gameIsPaused = false
         this.gameStarted = false
         this.gameIsOver = false
+        this.shootingInterval
+        this.weaponDelay = 175
 
         this.scoreboard = new Scoreboard()
         this.levelBoard = new LevelBoard(this.scoreboard.textHeight)
@@ -54,6 +56,9 @@ class GameManager {
         this.asteroids = []
         this.lasers = []
         this.gameIsOver = false
+        this.levelCounter = 0
+        this.scoreboard.resetScore()
+        this.levelBoard.resetLevel()
     }
 
     checkRemainingAsteroid() {
@@ -78,24 +83,22 @@ class GameManager {
     checkHitCollision() {}
 
     checkLaserCollision() {
-        for (let i = this.lasers.length - 1; i >= 0; i--) {
-            if (this.lasers[i].offscreen()) {
-                this.lasers.splice(i, 1)
-                break
+        this.lasers.forEach((laser, lIndex, lArray) => {
+            if (laser.offscreen()) {
+                lArray.splice(lIndex, 1)
             }
-            for (let j = this.asteroids.length - 1; j >= 0; j--) {
-                if (this.lasers[i].hits(this.asteroids[j])) {
-                    this.scoreboard.add(this.asteroids[j].r)
-                    if (this.asteroids[j].r > 20) {
-                        let newAsteroids = this.asteroids[j].breakup()
+            this.asteroids.forEach((asteroid, aIndex, aArray) => {
+                if (laser.hits(asteroid)) {
+                    this.scoreboard.add(asteroid.r)
+                    aArray.splice(aIndex, 1)
+                    lArray.splice(lIndex, 1)
+                    if (asteroid.r > 20) {
+                        let newAsteroids = asteroid.breakup()
                         this.asteroids = this.asteroids.concat(newAsteroids)
                     }
-                    this.asteroids.splice(j, 1)
-                    this.lasers.splice(i, 1)
-                    break
                 }
-            }
-        }
+            })
+        })
     }
 
     getHighScore() {
@@ -113,6 +116,7 @@ class GameManager {
 
     kill_player() {
         this.player = null
+        this.stopShooting()
     }
 
     isPlayerAlive() {
@@ -138,9 +142,19 @@ GameManager.prototype.stop_rotate = function() {
     if (this.player) this.player.setRotation(0)
 }
 
-GameManager.prototype.shootLaser = function(type) {
-    if (this.player)
+GameManager.prototype.startShooting = function(type) {
+    if (this.player) {
         this.lasers.push(new DotBullet(this.player.pos, this.player.heading))
+        this.shootingInterval = setInterval(() => {
+            this.lasers.push(
+                new DotBullet(this.player.pos, this.player.heading)
+            )
+        }, this.weaponDelay)
+    }
+}
+
+GameManager.prototype.stopShooting = function() {
+    clearInterval(this.shootingInterval)
 }
 
 GameManager.prototype.thrust = function(tof) {
