@@ -75,7 +75,7 @@ function changeMainLabel(value) {
     mainLabel.html(value)
 }
 
-function playPause() {
+function playPause(tof) {
     if (gm.gameStarted && !gm.gameIsPaused) {
         noLoop()
         if (!gm.gameIsOver) {
@@ -122,8 +122,7 @@ function keyReleased() {
 
 function touchStarted(event) {
     if (event.type == 'touchstart') {
-        gm.touchControl(event.touches[0].pageX, event.touches[0].pageY)
-        showTouchCon = true
+        gm.touchCon.setStartPos(event.touches[0].pageX, event.touches[0].pageY)
         gm.startShooting()
     }
     return false
@@ -131,17 +130,20 @@ function touchStarted(event) {
 
 function touchMoved(event) {
     if (event.type == 'touchmove') {
-        gm.touchControl(event.touches[0].pageX, event.touches[0].pageY)
+        gm.touchCon.setCurrentPos(
+            event.touches[0].pageX,
+            event.touches[0].pageY
+        )
+        gm.touchControl()
     }
     return false
 }
 
 function touchEnded(event) {
     if (event.type == 'touchend') {
-        gm.touchControl(event.pageX, event.pageY)
         gm.stopShooting()
+        gm.touchCon.stopShowing()
     }
-    showTouchCon = false
     touchStartPos = []
     gm.thrust(false)
 }

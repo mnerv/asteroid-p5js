@@ -52,6 +52,7 @@ class Asteroid {
             // https://en.wikipedia.org/wiki/Cartesian_coordinate_system
             let x = r * cos(angle)
             let y = r * sin(angle)
+
             vertex(x, y)
         }
         endShape(CLOSE)

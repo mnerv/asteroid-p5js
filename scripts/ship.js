@@ -1,7 +1,9 @@
 class Ship {
     constructor() {
         this.pos = createVector(width / 2, height / 2)
-        this.rotationSpeed = 0.05
+        this.hp = new PlayerHealthBar()
+
+        this.rotationSpeed = 0.06
         this.thrustMultiplier = 0.5
 
         this.heading = -PI / 2
@@ -9,13 +11,15 @@ class Ship {
         this.rotation = 0
         this.velocity = createVector(0, 0)
         this.isThrust = false
+        this.thrustLimiting = 1
 
-        this.friction = 0.97
+        this.friction = 0.98
     }
 
     update() {
         this.pos.add(this.velocity)
-        this.velocity.mult(this.friction)
+        if (this.velocity.mag() > 1 / 1000) this.velocity.mult(this.friction)
+        else this.velocity.mult(0)
 
         if (this.isThrust) this.thrust()
 
@@ -78,6 +82,7 @@ class Ship {
 
     thrusting(tof) {
         this.isThrust = tof
+        if (!tof) this.thrustLimiting = 1
     }
 
     rotating() {
@@ -101,6 +106,22 @@ class Ship {
         }
 
         force.mult(this.thrustMultiplier)
+        force.mult(this.thrustLimiting)
         this.velocity.add(force)
     }
+
+    analogThrust(value) {
+        this.thrustLimiting = constrain(value, 0, 1)
+    }
+}
+
+class PlayerHealthBar {
+    constructor() {
+        this.pos = createVector(5, height - 15)
+        this.health = 100
+    }
+
+    update() {}
+
+    show() {}
 }

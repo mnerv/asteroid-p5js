@@ -8,6 +8,7 @@ class GameManager {
 
         this.scoreboard = new Scoreboard()
         this.levelBoard = new LevelBoard(this.scoreboard.textHeight)
+        this.touchCon = new TouchControl()
 
         this.player
 
@@ -24,9 +25,9 @@ class GameManager {
         if (this.player) {
             this.player.update()
             this.checkRemainingAsteroid()
+            this.checkPlayerCollision()
+            if (this.touchCon.showTouchControl) this.touchCon.update()
         }
-
-        this.checkPlayerCollision()
         this.checkLaserCollision()
 
         this.scoreboard.update()
@@ -37,12 +38,13 @@ class GameManager {
             this.player.render()
             this.scoreboard.render()
             this.levelBoard.render()
+            if (this.touchCon.showTouchControl) this.touchCon.show()
         }
-        this.lasers.forEach(element => {
-            element.update()
+        this.lasers.forEach(laser => {
+            laser.update()
         })
-        this.asteroids.forEach(element => {
-            element.update()
+        this.asteroids.forEach(asteroid => {
+            asteroid.update()
         })
     }
 
@@ -50,6 +52,7 @@ class GameManager {
         this.spawn_player()
         this.addAsteroid(5)
         this.gameStarted = true
+        this.gameIsPaused = false
     }
 
     resetGame() {
@@ -68,16 +71,13 @@ class GameManager {
     }
 
     checkPlayerCollision() {
-        for (let i = 0; i < this.asteroids.length; i++) {
-            if (this.player)
-                if (this.player.hits(this.asteroids[i])) {
-                    this.gameOver()
-                    this.asteroids = this.asteroids.concat(
-                        this.asteroids[i].breakup()
-                    )
-                    this.asteroids.splice(i, 1)
-                }
-        }
+        this.asteroids.forEach((asteroid, index, array) => {
+            if (this.player && this.player.hits(asteroid)) {
+                this.gameOver()
+                array.splice(index, 1)
+                array = array.concat(asteroid.breakup())
+            }
+        })
     }
 
     checkHitCollision() {}
@@ -128,6 +128,10 @@ class GameManager {
             this.asteroids.push(new Asteroid())
         }
     }
+
+    deleteAsteroids() {
+        this.asteroids = []
+    }
 }
 
 // Ship movment
@@ -143,11 +147,15 @@ GameManager.prototype.stop_rotate = function() {
 }
 
 GameManager.prototype.startShooting = function(type) {
-    if (this.player) {
+    if (this.player && !this.gameIsPaused) {
         this.lasers.push(new DotBullet(this.player.pos, this.player.heading))
         this.shootingInterval = setInterval(() => {
             this.lasers.push(
-                new DotBullet(this.player.pos, this.player.heading)
+                new DotBullet(
+                    this.player.pos,
+                    this.player.heading,
+                    this.player.velocity
+                )
             )
         }, this.weaponDelay)
     }
@@ -161,11 +169,14 @@ GameManager.prototype.thrust = function(tof) {
     if (this.player) this.player.thrusting(tof)
 }
 
-GameManager.prototype.touchControl = function(x, y) {
+GameManager.prototype.touchControl = function() {
     if (this.player) {
-        let vec = createVector(x - this.player.pos.x, y - this.player.pos.y)
-        let shipHeading = vec.heading()
-        this.player.setHeading(shipHeading)
+        let vec = createVector(
+            this.touchCon.currentPos.x - this.touchCon.startPos.x,
+            this.touchCon.currentPos.y - this.touchCon.startPos.y
+        )
+        this.player.setHeading(vec.heading())
+        this.player.analogThrust(this.touchCon.thrustScale)
         this.thrust(true)
     }
 }
@@ -185,6 +196,7 @@ GameManager.prototype.isNoAsteroid = function() {
 
 // Game play/pause
 GameManager.prototype.pauseGame = function() {
+    this.stopShooting()
     this.gameIsPaused = true
 }
 

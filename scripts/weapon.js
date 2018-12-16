@@ -1,7 +1,8 @@
-function DotBullet(sPos, angle) {
+function DotBullet(sPos, angle, initialVelcity) {
     this.pos = createVector(sPos.x, sPos.y)
     this.velocity = p5.Vector.fromAngle(angle)
     this.velocity.mult(10)
+    this.velocity.add(initialVelcity)
 
     this.update = function() {
         this.pos.add(this.velocity)
