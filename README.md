@@ -1,6 +1,6 @@
 # Asteroid in p5.js
 
-Press [here](https://kthexiii.github.io/asteroid-p5js/) to try it
+Press [here](https://mnerv.github.io/asteroid-p5js/) to try it
 
 `x` to shoot
 
